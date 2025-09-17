@@ -1,38 +1,32 @@
-#ifndef SHADER____H
-#define SHADER____H
-
-#include <iostream>
-#include <fstream>
-#include <stdio.h>
-#include <string>
-#include <string.h>
+#ifndef SHADER_H
+#define SHADER_H
 
 #include <GL/glew.h>
+#include <string>
 
 class Shader
 {
-    public:
-        Shader();
-        ~Shader();
+public:
+    Shader();
+    ~Shader() {}
 
-        void CreateFromString (const char* vertexCode, const char* fragmentCode);
-        void CreateFromFiles (const char* vertexLocation, const char* fragmentLocation);
-        std::string ReadFile(const char* fileLocation);
+    // สร้าง shader จากไฟล์ vertex และ fragment
+    void CreateFromFiles(const char* vertexLocation, const char* fragmentLocation);
 
-        void UseShader();
-        void ClearShader();
+    // ใช้งาน shader program
+    void UseShader();
 
-        GLuint GetUniformLocation(const char* uniformName) {return glGetUniformLocation(shader, uniformName);}
-        GLuint GetModelLocation() { return uniformModel; }
-        GLuint GetProjectionLocation() { return uniformProjection; }
+    // คืนค่า uniform location
+    GLuint GetUniformLocation(const char* uniformName);
 
+    // คืนค่า shader program ID
+    GLuint GetShaderID();
 
-    private:
-        GLuint shader;
-        GLuint uniformModel, uniformProjection;   // <--- ต้องมีตัวนี้
-        void CompileShaders(const char* vertexCode, const char* fragmentCode);
-        void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType);
+private:
+    GLuint shaderID;
 
+    // compile shader จาก code ที่อ่านจากไฟล์
+    void CompileShader(const char* vertexCode, const char* fragmentCode);
 };
 
 #endif
